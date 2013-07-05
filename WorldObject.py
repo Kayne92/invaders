@@ -1,5 +1,6 @@
 import pygame
 import os
+from constants import *
 
 class WorldObject(pygame.sprite.Sprite):
 
@@ -26,22 +27,23 @@ class WorldObject(pygame.sprite.Sprite):
     def update(self):
         self.controller.screen.blit(self.images[self.frame], self.rect)
 
-
     def kill(self):
         super(WorldObject, self).kill()
         self.controller.killObject(self)
         self.alive = False
 
-
-class Damage(WorldObject):
-    defaultlife = 12
-    animcycle = 3
-    images = []
-    def __init__(self, pos, *groups):
-        super(Damage, self).__init__('damage.gif', pos, *groups)
-        self.life = 0
-        print(self.images)
+class Coin(WorldObject):
+    def __init__(self, controller, pos):
+        super(Coin, self).__init__('coin.png', 6, pos)
+        self.speed = 7
+        self.controller = controller
+        self.controller.addWorldObject(self)
 
     def update(self):
-        self.life += 1
-        # self.image = self.images[self.life]
+        super(Coin, self).update()
+        self.rect.y += self.speed
+        self.frame += 1
+        if(self.frame >= self.last_frame):
+            self.frame = 0
+        if self.rect.y > SCREEN_HEIGHT:
+            self.kill()

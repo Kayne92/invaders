@@ -1,7 +1,9 @@
 import pygame
 from bullet import *
-from player import Player
+from player import *
 from alien import Alien
+from explosion import *
+
 
 class Game:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -23,16 +25,16 @@ class Game:
         self.alien_level = 0
         self.alien_shoot_frequency = 600
         self.alien_shoot_timer = 0
+        self.score = 0
 
     def main(self):
         while self.running:
+            pygame.display.set_caption("score: " + str(self.score))
             self.screen.blit(self.background, (0, 0))
             self.clock.tick(30)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return
-
-            #self.sprite.update(self.t)
 
             for obj in self.objects:
                 self.alien_shoot_timer += 1
@@ -41,7 +43,6 @@ class Game:
 
             self.updateAlienDirectionAndLevel()
 
-            #self.sprites.draw(screen)
             pygame.display.flip()
 
     def updateAlienDirectionAndLevel(self):
@@ -56,14 +57,38 @@ class Game:
             if obj1.__class__ != obj2.__class__:
                 if obj1.rect.colliderect(obj2.rect):
                     if(obj1.__class__ == PlayerBullet):
-                        if(obj2.__class__ != Player):
+                        if obj2.__class__ == Alien:
                             obj1.kill()
                             obj2.kill()
+                            spawn_pos = (obj1.rect.x, obj1.rect.y)
+                            self.addWorldObject(Explosion(self, spawn_pos))
+                            Coin(self, spawn_pos)
+                            self.score += 75 - obj2.alien_level
+                        if obj2.__class__ == EnemyBullet:
+                            obj1.kill()
+                            obj2.kill()
+                            spawn_pos = (obj1.rect.x, obj1.rect.y)
+                            self.addWorldObject(SmallExplosion(self, spawn_pos))
+
+                    if(obj1.__class__ == Coin):
+                        if(obj2.__class__ == Player):
+                            self.score += 50
+                            obj1.kill()
+                        if(obj2.__class__ == PlayerBullet):
+                            obj1.kill()
+                            spawn_pos = (obj1.rect.x, obj1.rect.y)
+                            self.addWorldObject(SmallExplosion(self, spawn_pos))
 
                     if(obj1.__class__ == Player):
-                        if(obj2.__class__ == Alien or obj2.__class__ == EnemyBullet):
+                        if(obj2.__class__ == Alien):
                             pygame.time.wait(1000)
                             self.running = False
+
+                        if(obj2.__class__ == EnemyBullet and self.player.blink == 0):
+                            pygame.time.wait(1000)
+                            self.player.blink = 100
+                            self.player.removeLife()
+                            obj2.kill()
 
     def addWorldObject(self, obj):
         self.objects.append(obj)

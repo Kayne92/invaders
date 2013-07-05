@@ -2,20 +2,26 @@ import pygame
 from constants import *
 from WorldObject import *
 from bullet import *
+from explosion import *
+
 
 class Alien(WorldObject):
     speed = 3
     direction = 1
 
     def __init__(self, controller, xpos, level, *groups):
-        super(Alien, self).__init__('invader.png', 1, (xpos, 70))
+        super(Alien, self).__init__('enemy ships.png', 8, (xpos, 70))
         self.level = level
         self.controller = controller
         self.alien_level = 0
         self.alien_direction = 1
+        self.cnt = 0
 
     def update(self):
         super(Alien, self).update()
+        self.frame += 1
+        if self.frame >= self.last_frame:
+            self.frame = 0
         self.rect.x += self.speed * self.alien_direction  # self.direction
         self.rect.y = self.alien_level * self.image_size[1] + self.level
 
@@ -29,3 +35,6 @@ class Alien(WorldObject):
         gun_pos = (self.rect.x + self.image_size[0] // 2, self.rect.y + self.image_size[1])
         self.controller.addWorldObject(EnemyBullet(self.controller, gun_pos))
         self.controller.alien_shoot_timer = 0
+
+    def kill(self):
+        super(Alien, self).kill()
