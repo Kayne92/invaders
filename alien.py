@@ -16,6 +16,7 @@ class Alien(WorldObject):
         self.alien_level = 0
         self.alien_direction = 1
         self.cnt = 0
+        self.score = 75
 
     def update(self):
         super(Alien, self).update()
@@ -38,3 +39,4 @@ class Alien(WorldObject):
 
     def kill(self):
         super(Alien, self).kill()
+        #self.controller.score += self.score - self.alien_level

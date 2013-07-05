@@ -9,7 +9,7 @@ class Player(WorldObject):
         super(Player, self).__init__('ship.png', 5, (320, PLAYER_YPOS))
         self.controller = controller
         self.speed = 7
-        self.reload_time = 4
+        self.reload_time = 7
         self.shoot_timer = 0
         self.cnt = 0
         self.blink = 0

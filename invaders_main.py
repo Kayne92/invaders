@@ -5,11 +5,12 @@ from alien import Alien
 from explosion import *
 from gameover import *
 
+
 class Game:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     running = True
-    sprites = pygame.sprite.Group()
+    #sprites = pygame.sprite.Group()
     objects = []
 
     def __init__(self):
@@ -29,6 +30,7 @@ class Game:
         self.game_over = False
 
     def main(self):
+
         while self.running:
             pygame.display.set_caption("score: " + str(self.score))
             self.screen.blit(self.background, (0, 0))
