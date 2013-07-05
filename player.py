@@ -4,7 +4,7 @@ from WorldObject import *
 
 class Player(WorldObject):
 
-    def __init__(self, controller, *groups):
+    def __init__(self, controller, image = 'ship.png'):
 
         super(Player, self).__init__('ship.png', 5, (320, PLAYER_YPOS))
         self.controller = controller

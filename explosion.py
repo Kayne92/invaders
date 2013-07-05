@@ -3,8 +3,8 @@ from WorldObject import WorldObject
 
 
 class Explosion(WorldObject):
-    def __init__(self, controller, pos):
-        super(Explosion, self).__init__('explosion.png', 17, pos)
+    def __init__(self, controller, pos, image = 'explosion.png'):
+        super(Explosion, self).__init__(image, 17, pos)
         self.controller = controller
         #self.controller.addWorldObject(self, pos)
 

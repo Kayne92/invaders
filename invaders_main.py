@@ -3,7 +3,7 @@ from bullet import *
 from player import *
 from alien import Alien
 from explosion import *
-
+from gameover import *
 
 class Game:
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -26,6 +26,7 @@ class Game:
         self.alien_shoot_frequency = 600
         self.alien_shoot_timer = 0
         self.score = 0
+        self.game_over = False
 
     def main(self):
         while self.running:
@@ -36,11 +37,18 @@ class Game:
                 if event.type == pygame.QUIT:
                     return
 
+            self.game_over = True
             for obj in self.objects:
+
+                if obj.__class__ == Alien:
+                    self.game_over = False
+
                 self.alien_shoot_timer += 1
                 obj.update()
                 self.check_collision(obj)
 
+            if self.game_over:
+                self.addWorldObject(Winner(self))
             self.updateAlienDirectionAndLevel()
 
             pygame.display.flip()
