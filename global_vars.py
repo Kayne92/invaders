@@ -1,4 +1,0 @@
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-PLAYER_YPOS = 520
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
